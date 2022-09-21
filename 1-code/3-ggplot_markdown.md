@@ -3,7 +3,7 @@ ggplot2 – The grammar of graphics
 
 ![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
 
------
+------------------------------------------------------------------------
 
 This tutorial uses the `{palmerpenguins}` package, available on CRAN.
 
@@ -13,8 +13,8 @@ library(ggplot2)
 ```
 
 <details>
-
-<summary>click here for a quick exploration of the `penguins` dataset
+<summary>
+click here for a quick exploration of the `penguins` dataset
 </summary>
 
 first, use the `str` function for a quick exploration of columns and
@@ -36,35 +36,48 @@ str(penguins)
 
 </details>
 
------
+------------------------------------------------------------------------
 
-## Part A: Elements of a `ggplot` graph:
+------------------------------------------------------------------------
 
-1.  [foundation](https://github.com/kaizadp/introductoryR/blob/master/code/ggplot_markdown.md#step-1-set-up-the-basic-foundation-plot)
-2.  [geometries](https://github.com/kaizadp/introductoryR/blob/master/code/ggplot_markdown.md#step-2-add-geoms)
-3.  [formatting
-    geoms](https://github.com/kaizadp/introductoryR/blob/master/code/ggplot_markdown.md#step-3-format-geoms)
-4.  [color and shape
-    scales](https://github.com/kaizadp/introductoryR/blob/master/code/ggplot_markdown.md#step-4-scales-for-colors-and-shapes)
-5.  [formatting
-    axes](https://github.com/kaizadp/introductoryR/blob/master/code/ggplot_markdown.md#step-5-formatting-axes)
+<a name = "toc"></a>
+
+## Elements of a `ggplot` graph:
+
+A {ggplot2} object is created in sequential layers of the foundation,
+geometries, and annotations
+
+1.  [foundation](#foundation)
+2.  [geometries](#geoms)
+3.  [formatting geoms](#formatting)
+    -   [color and shapes](#color_shape)
+    -   [colors and shapes by group](#color_shape_group)
+    -   [color vs. fill](#fill)
+    -   [transparency](#transparency)
+4.  [color and shape scales](#color_scales)
+    -   [manual color scales](#)
+    -   [continuous color scales](#)
+    -   [shape scales](#)
+5.  [formatting axes](#axes)
+    -   [axis limits](#axis_limits)
+    -   [axis labels](#axis_labels)
+    -   [axis scales](#axis_scales)
 6.  [labels and annotations](#labs)
-7.  [themes](https://github.com/kaizadp/introductoryR/blob/master/code/ggplot_markdown.md#step-6-themes)
-8.  facets and panels
+7.  [themes](#themes)
+    -   [formatting axis titles and text](#axis_text)
+    -   [formatting gridlines](#gridlines)
+    -   [formatting borders and background](#border)
+    -   [formatting titles and captions](#format_title)
 
-## Part B: Detailed exploration of some plot types
+------------------------------------------------------------------------
 
-  - scatterplots
-  - bar plots
+------------------------------------------------------------------------
 
-## Part C: combining multiple plots
+<a name = "foundation"></a>
 
------
+## Step 1: set up the basic foundation plot
 
-### Step 1: set up the basic foundation plot
-
-[*back to
-top*](https://github.com/kaizadp/introductoryR/blob/master/code/ggplot_markdown.md#elements-of-a-ggplot-graph)
+[*back to top*](#toc)
 
 Specify (a) the dataset being used and (b) the mapping (x and y axes)
 
@@ -85,12 +98,17 @@ ggplot(penguins,
 
 ![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
------
+This creates the blank panel, on which we plot the geometries.
 
-### Step 2: add `geoms`
+------------------------------------------------------------------------
 
-[*back to
-top*](https://github.com/kaizadp/introductoryR/blob/master/code/ggplot_markdown.md#elements-of-a-ggplot-graph)
+------------------------------------------------------------------------
+
+<a name = "geoms"></a>
+
+## Step 2: add geometries
+
+[*back to top*](#toc)
 
 `ggplot2` uses `geom` functions to add layers with different types of
 data visualization, e.g. points, lines, boxplots, violin plots, etc.
@@ -128,21 +146,26 @@ ggplot(penguins, aes(x = island, y = flipper_length_mm)) +
 
 ![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
------
+------------------------------------------------------------------------
 
-### Step 3: format `geoms`
+------------------------------------------------------------------------
 
-[*back to
-top*](https://github.com/kaizadp/introductoryR/blob/master/code/ggplot_markdown.md#elements-of-a-ggplot-graph)
+<a name = "formatting"></a>
 
-Modify color, shape, size by adding arguments in the `geom_()`
+## Step 3: format `geoms`
+
+[*back to top*](#toc)
+
+Modify color, shape, size by adding arguments in the `geom_*()`
 parentheses.  
-If you leave the parentheses blank, it will default to `color =
-"black"`, `shape = 19`, `size = 1.5` for scatterplots
+If you leave the parentheses blank, it will default to
+`color = "black"`, `shape = 19`, `size = 1.5` for scatterplots
+
+<a name = "color_shape"></a>
 
 #### setting one color/shape for all points
 
-simply type `color = ...`, etc. arguments in the `geom_()` parentheses.
+simply type `color = ...`, etc. arguments in the `geom_*()` parentheses.
 
 ``` r
 ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm)) +
@@ -151,14 +174,14 @@ ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm)) +
 
 ![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
-Notes:
+`stroke = ...` will adjust the thickness of point outline
 
-1.  you can use “color” or “colour”
-2.  you can specify colors using the hex code (e.g. \#000000) or color
-    names from [this
-    list](http://sape.inf.usi.ch/quick-reference/ggplot2/colour).
-3.  you can specify shapes using codes from [this
-    list](http://www.sthda.com/english/wiki/ggplot2-point-shapes).
+``` r
+ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm)) +
+  geom_point(color = "darkred", shape = 21, size = 2, stroke = 1)
+```
+
+![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
 for `geom_smooth()` and similar line-based `geoms`, `size = ...` will
 set the line thickness
@@ -168,7 +191,7 @@ ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm)) +
   geom_smooth(method = "lm", se = FALSE, color = "darkblue", size = 2)
 ```
 
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
 for `geom_smooth()` and similar line-based `geoms`, `linetype = ...`
 will set the dash type. Options include `solid`, `dashed`, `longdash`,
@@ -179,7 +202,20 @@ ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm)) +
   geom_smooth(method = "lm", se = FALSE, linetype = "longdash", size = 2)
 ```
 
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+
+Notes:
+
+1.  you can use “color” or “colour” spelling
+2.  you can specify colors using the hex code (e.g. \#000000) or color
+    names from [this
+    list](http://sape.inf.usi.ch/quick-reference/ggplot2/colour).
+3.  you can specify shapes using codes from [this
+    list](http://www.sthda.com/english/wiki/ggplot2-point-shapes).
+
+------------------------------------------------------------------------
+
+<a name = "color_shape_group"></a>
 
 #### setting colors/shapes by group
 
@@ -190,19 +226,24 @@ This example assigns a different color and shape for each island.
 
 ``` r
 ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm)) +
-  geom_point(aes(color = island, shape = island))
+  geom_point(aes(color = island, shape = island), size = 2)
 ```
 
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
 
-This example assigns a different color and dot size for each island.
+In the example above, `color = ...` and `shape = ...` are in the
+`aes()`, so each island gets a shape and color. `size = ...` is outside
+the `aes()`, so all the points are of size 2.
+
+This next example assigns a different color and point size for each
+island.
 
 ``` r
 ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm)) +
   geom_point(aes(color = island, size = island))
 ```
 
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 
 In the examples above, the grouping variables were categorical.  
 You can also use numeric variables - you will get a gradient of
@@ -213,16 +254,23 @@ ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm)) +
   geom_point(aes(size = body_mass_g))
 ```
 
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
 
 ``` r
 ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm)) +
   geom_point(aes(color = body_mass_g))
 ```
 
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+
+------------------------------------------------------------------------
 
 #### setting colors/shapes for multiple `geoms`
+
+<details>
+<summary>
+Some examples – click to expand
+</summary>
 
 You can use the technique above for each `geom`. Use this to customize
 each `geom` separately.
@@ -233,7 +281,7 @@ ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm)) +
   geom_smooth(method = "lm", se = FALSE, color = "black", size = 2)
 ```
 
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
 
 Similarly, you can set color by group for each `geom`.
 
@@ -246,7 +294,7 @@ ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm)) +
   geom_smooth(method = "lm", se = FALSE, color = "black", size = 2)
 ```
 
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
+![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
 
 In this example, we set color by species for both, scatterplot and
 regression line.
@@ -267,7 +315,7 @@ ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm, color = species)) +
   geom_smooth(method = "lm", se = FALSE)
 ```
 
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
+![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
 
 What if you want separate regression lines, but all the same color? Use
 `aes(group = ...)`
@@ -278,14 +326,14 @@ ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm)) +
   geom_smooth(method = "lm", se = FALSE, aes(group = species), color = "black")
 ```
 
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
+![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-21-1.png)<!-- -->
 
 Note: if there are contradicting pieces of code, the most recent
 occurrence will override the previous one.
 
-In this example, we want to set color by species (`aes(color =
-species`)), but we also have `geom_point(color = "blue")`, which will
-override the previous color argument.
+In this example, we want to set color by species
+(`aes(color = species`)), but we also have `geom_point(color = "blue")`,
+which will override the previous color argument.
 
 ``` r
 ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm, aes(color = species))) +
@@ -293,7 +341,13 @@ ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm, aes(color = species
   geom_smooth(method = "lm", se = FALSE, aes(group = species), color = "black")
 ```
 
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-21-1.png)<!-- -->
+![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
+
+</details>
+
+------------------------------------------------------------------------
+
+<a name = "fill"></a>
 
 #### *color* vs. *fill*
 
@@ -307,14 +361,14 @@ ggplot(penguins, aes(x = species, y = flipper_length_mm)) +
   geom_violin(color = "black", fill = "yellow")
 ```
 
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
+![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
 
 ``` r
 ggplot(penguins, aes(x = species, y = flipper_length_mm)) +
   geom_violin(color = "black", aes(fill = species))
 ```
 
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
+![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->
 
 `fill` is can also be applied to `geom_point()` with certain shapes
 
@@ -323,7 +377,11 @@ ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm)) +
   geom_point(shape = 21, size = 2, color = "black", aes(fill = species))
 ```
 
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->
+![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-25-1.png)<!-- -->
+
+------------------------------------------------------------------------
+
+<a name = "transparency"></a>
 
 #### transparency
 
@@ -335,17 +393,23 @@ ggplot(penguins, aes(x = species, y = flipper_length_mm)) +
   geom_violin(color = "black", fill = "yellow", alpha = 0.3)
 ```
 
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-25-1.png)<!-- -->
+![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
 
------
+------------------------------------------------------------------------
 
-### Step 4: scales for colors and shapes
+------------------------------------------------------------------------
 
-[*back to
-top*](https://github.com/kaizadp/introductoryR/blob/master/code/ggplot_markdown.md#elements-of-a-ggplot-graph)
+<a name = "color_scales"></a>
 
-**Note: These `scale_` functions work only if you use the `aes(color =
-...)` or `aes(shape = ...)` functions to group by color/shape.**
+## Step 3b: scales for colors and shapes
+
+[*back to top*](#toc)
+
+**Note: These `scale_` functions work only if you use the
+`aes(color = ...)` or `aes(shape = ...)` functions to group by
+color/shape.**
+
+------------------------------------------------------------------------
 
 #### manual color scales (for categorical variables)
 
@@ -360,39 +424,9 @@ ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm)) +
   scale_color_manual(values = c("red", "blue", "yellow"))
 ```
 
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
-
-You can use the [`brewer` color
-palettes](https://www.datanovia.com/en/blog/the-a-z-of-rcolorbrewer-palette/)
-
-``` r
-ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm)) +
-  geom_point(aes(color = species))+
-  scale_color_brewer(palette = "Dark2")
-```
-
 ![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-27-1.png)<!-- -->
 
-You can also use other pre-defined palettes created by other users.
-Included here are
-[`{PNWPalettes}`](https://github.com/jakelawlor/PNWColors) and
-[`{soilpalettes}`](https://github.com/kaizadp/soilpalettes).
-
-``` r
-ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm)) +
-  geom_point(aes(color = species))+
-  scale_color_manual(values = PNWColors::pnw_palette("Sunset2",3))
-```
-
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-28-1.png)<!-- -->
-
-``` r
-ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm)) +
-  geom_point(aes(color = species))+
-  scale_color_manual(values = soilpalettes::soil_palette("podzol",3))
-```
-
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-29-1.png)<!-- -->
+------------------------------------------------------------------------
 
 #### gradient color scales (for numeric/continuous variables)
 
@@ -408,7 +442,12 @@ ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm)) +
   scale_color_gradient(low = "red", high = "blue")
 ```
 
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-30-1.png)<!-- -->
+![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-28-1.png)<!-- -->
+
+<details>
+<summary>
+types of gradient scales
+</summary>
 
 Use `scale_color_gradient2()` for a diverging color gradient. You can
 set the high and low extremes as well as the midpoint and midpoint
@@ -420,7 +459,7 @@ ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm)) +
   scale_color_gradient2(low = "red", high = "blue", mid = "white", midpoint = 4000)
 ```
 
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-31-1.png)<!-- -->
+![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-29-1.png)<!-- -->
 
 Use `scale_color_gradientn()` if you want to use multiple colors in your
 gradient. You can also use a pre-defined color palette,
@@ -432,7 +471,45 @@ ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm)) +
   scale_color_gradientn(colors = c("blue", "green", "yellow", "orange", "red"))
 ```
 
+![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-30-1.png)<!-- -->
+
+</details>
+<details>
+<summary>
+example color palettes
+</summary>
+
+You can use the [`brewer` color
+palettes](https://www.datanovia.com/en/blog/the-a-z-of-rcolorbrewer-palette/)
+
+``` r
+ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm)) +
+  geom_point(aes(color = species))+
+  scale_color_brewer(palette = "Dark2")
+```
+
+![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-31-1.png)<!-- -->
+
+You can also use other pre-defined palettes created by other users.
+Included here are
+[`{PNWPalettes}`](https://github.com/jakelawlor/PNWColors) and
+[`{soilpalettes}`](https://github.com/kaizadp/soilpalettes).
+
+``` r
+ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm)) +
+  geom_point(aes(color = species))+
+  scale_color_manual(values = PNWColors::pnw_palette("Sunset2",3))
+```
+
 ![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-32-1.png)<!-- -->
+
+``` r
+ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm)) +
+  geom_point(aes(color = species))+
+  scale_color_manual(values = soilpalettes::soil_palette("podzol",3))
+```
+
+![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-33-1.png)<!-- -->
 
 ``` r
 ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm)) +
@@ -440,7 +517,11 @@ ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm)) +
   scale_color_gradientn(colors = soilpalettes::soil_palette("podzol", 5))
 ```
 
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-33-1.png)<!-- -->
+![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-34-1.png)<!-- -->
+
+</details>
+
+------------------------------------------------------------------------
 
 #### scales for shapes
 
@@ -454,14 +535,21 @@ ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm)) +
   scale_shape_manual(values = c(1, 16, 4))
 ```
 
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-34-1.png)<!-- -->
+![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-35-1.png)<!-- -->
 
------
+------------------------------------------------------------------------
 
-### Step 5: formatting axes
+------------------------------------------------------------------------
 
-[*back to
-top*](https://github.com/kaizadp/introductoryR/blob/master/code/ggplot_markdown.md#elements-of-a-ggplot-graph)
+<a name = "axes"></a>
+
+## Step 5: formatting axes
+
+[*back to top*](#toc)
+
+------------------------------------------------------------------------
+
+<a name = "axis_limits"></a>
 
 #### setting axis limits
 
@@ -485,7 +573,11 @@ ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm)) +
   scale_y_continuous(limits = c(130, 250))
 ```
 
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-36-1.png)<!-- -->
+![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-37-1.png)<!-- -->
+
+------------------------------------------------------------------------
+
+<a name = "axis_labels"></a>
 
 #### setting axis labels
 
@@ -505,15 +597,20 @@ ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm)) +
   labs(x = "body mass (g)", y = "flipper length (mm)")
 ```
 
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-38-1.png)<!-- -->
+![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-39-1.png)<!-- -->
 
 <details>
-
-<summary>for tips on more complicated axis labels, click here</summary>
+<summary>
+for tips on more complicated axis labels, click here
+</summary>
 
 coming soon. good luck.
 
 </details>
+
+------------------------------------------------------------------------
+
+<a name = "axis_scales"></a>
 
 #### axis scales
 
@@ -531,7 +628,7 @@ ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm)) +
                      minor_breaks = seq(5000, 6000, by = 100))
 ```
 
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-39-1.png)<!-- -->
+![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-40-1.png)<!-- -->
 
 When working with a categorical axis, use `scale_x_discrete()`
 
@@ -545,7 +642,7 @@ ggplot(penguins, aes(x = species, y = flipper_length_mm)) +
                    labels = c("Adelie" = "A", "Chinstrap" = "C", "Gentoo" = "G"))
 ```
 
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-40-1.png)<!-- -->
+![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-41-1.png)<!-- -->
 
 ``` r
 ggplot(penguins, aes(x = species, y = flipper_length_mm)) +
@@ -553,28 +650,42 @@ ggplot(penguins, aes(x = species, y = flipper_length_mm)) +
   scale_x_discrete(position = "top")
 ```
 
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-41-1.png)<!-- -->
+![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-42-1.png)<!-- -->
+
+<details>
+<summary>
+axis transformations
+</summary>
+
+coming soon
+
+</details>
+
+------------------------------------------------------------------------
 
 You can also modify the following aspects of axes, but those must be
 done through `theme()`:
 
-  - font size
-  - font family
-  - bold, italics, etc.
-  - axis margin/spacing
+-   font size
+-   font family
+-   bold, italics, etc.
+-   axis margin/spacing
 
------
+------------------------------------------------------------------------
 
-### Step 6: themes
+------------------------------------------------------------------------
 
-[*back to
-top*](https://github.com/kaizadp/introductoryR/blob/master/code/ggplot_markdown.md#elements-of-a-ggplot-graph)
+<a name = "themes"></a>
+
+## Step 6: themes
+
+[*back to top*](#toc)
 
 You can use pre-defined themes to change the look of your plots.
 
 The default is `theme_gray()`. Here are the available options.
 
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-42-1.png)<!-- -->
+![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-43-1.png)<!-- -->
 
 You can use `theme()` to customize other features of the plot, such as
 font size, font color, plot color, legend position, etc. \[coming soon\]
@@ -584,6 +695,12 @@ font size, font color, plot color, legend position, etc. \[coming soon\]
 `element_text()`
 
 `element_rect()`
+
+------------------------------------------------------------------------
+
+<a name = "axis_text"></a>
+
+#### axis titles and text
 
 ``` r
 p = ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm)) + 
@@ -597,7 +714,7 @@ p + theme(axis.title = element_text(face = "bold",
                                     family = "Georgia"))
 ```
 
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-44-1.png)<!-- -->
+![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-45-1.png)<!-- -->
 
 ``` r
 p + theme(axis.title.x = element_text(face = "bold", 
@@ -605,13 +722,17 @@ p + theme(axis.title.x = element_text(face = "bold",
                                     family = "Georgia"))
 ```
 
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-45-1.png)<!-- -->
+![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-46-1.png)<!-- -->
 
 ``` r
 p + theme(axis.text = element_text(size = 12, color = "red"))
 ```
 
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-46-1.png)<!-- -->
+![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-47-1.png)<!-- -->
+
+------------------------------------------------------------------------
+
+<a name = "gridlines"></a>
 
 ##### removing gridlines
 
@@ -619,13 +740,17 @@ p + theme(axis.text = element_text(size = 12, color = "red"))
 p + theme(panel.grid = element_blank())
 ```
 
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-47-1.png)<!-- -->
+![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-48-1.png)<!-- -->
 
 ``` r
 p + theme(panel.grid.major = element_blank())
 ```
 
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-47-2.png)<!-- -->
+![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-48-2.png)<!-- -->
+
+------------------------------------------------------------------------
+
+<a name = "border"></a>
 
 ##### setting panel border
 
@@ -633,7 +758,7 @@ p + theme(panel.grid.major = element_blank())
 p + theme(panel.border = element_rect(size = 2))
 ```
 
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-48-1.png)<!-- -->
+![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-49-1.png)<!-- -->
 
 ##### setting panel background
 
@@ -641,7 +766,11 @@ p + theme(panel.border = element_rect(size = 2))
 p + theme(panel.background = element_rect(fill = "yellow"))
 ```
 
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-49-1.png)<!-- -->
+![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-50-1.png)<!-- -->
+
+------------------------------------------------------------------------
+
+<a name = "format_title"></a>
 
 ##### adjusting title, subtitle
 
@@ -651,9 +780,13 @@ p + labs(title = "Palmer Penguins", subtitle = "flipper length vs. body mass") +
         plot.subtitle = element_text(size = 14, color = "darkred", family = "Georgia"))
 ```
 
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-50-1.png)<!-- -->
+![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-51-1.png)<!-- -->
 
-### Step 7: facets and panels
+------------------------------------------------------------------------
+
+------------------------------------------------------------------------
+
+## Step 7: facets and panels
 
 ``` r
 ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g))+
@@ -661,7 +794,7 @@ ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g))+
   facet_wrap(~species)
 ```
 
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-51-1.png)<!-- -->
+![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-52-1.png)<!-- -->
 
 ``` r
 ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g))+
@@ -669,7 +802,7 @@ ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g))+
   facet_wrap(~species, scales = "free_x")
 ```
 
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-52-1.png)<!-- -->
+![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-53-1.png)<!-- -->
 
 ``` r
 ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g))+
@@ -677,7 +810,7 @@ ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g))+
   facet_grid(island~species)
 ```
 
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-53-1.png)<!-- -->
+![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-54-1.png)<!-- -->
 
 ``` r
 ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g))+
@@ -685,7 +818,7 @@ ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g))+
   facet_grid(.~species)
 ```
 
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-54-1.png)<!-- -->
+![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-55-1.png)<!-- -->
 
 ``` r
 ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g))+
@@ -693,205 +826,6 @@ ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g))+
   facet_grid(island~.)
 ```
 
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-55-1.png)<!-- -->
-
-# —-
-
-### Scatter plots
-
-``` r
-ggplot(penguins, aes(x = species, y = body_mass_g, color = sex))+
-  geom_point()
-```
-
 ![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-56-1.png)<!-- -->
 
-``` r
-library(dplyr)
-ggplot(penguins %>% filter(!is.na(sex)), aes(x = species, y = body_mass_g, color = sex))+
-  geom_point(position = position_dodge(width = 0.3))
-```
-
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-57-1.png)<!-- -->
-
-``` r
-ggplot(penguins %>% filter(!is.na(sex)), aes(x = species, y = body_mass_g, color = sex))+
-  geom_point(position = position_jitter())
-```
-
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-58-1.png)<!-- -->
-
-``` r
-ggplot(penguins %>% filter(!is.na(sex)), aes(x = species, y = body_mass_g, color = sex))+
-  geom_jitter()
-```
-
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-58-2.png)<!-- -->
-
------
-
-## combining multiple ggplot objects
-
-``` r
-p1 = ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g))+
-  geom_point()
-
-p2 = ggplot(penguins, aes(x = bill_length_mm, y = bill_depth_mm))+
-  geom_point()
-```
-
-``` r
-library(patchwork)
-p1 + p2
-```
-
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-60-1.png)<!-- -->
-
-``` r
-p1 / p2
-```
-
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-60-2.png)<!-- -->
-
-``` r
-library(cowplot)
-
-plot_grid(p1, p2)
-```
-
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-61-1.png)<!-- -->
-
-``` r
-plot_grid(p1, p2, nrow = 2)
-```
-
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-61-2.png)<!-- -->
-
-``` r
-library(ggpubr)
-
-ggarrange(p1, p2)
-```
-
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-62-1.png)<!-- -->
-
 # —-
-
-### line plots and smoothers
-
-``` r
-ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm)) +
-  geom_smooth()
-```
-
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-63-1.png)<!-- -->
-
-``` r
-ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm)) +
-  geom_smooth(method = "lm")
-```
-
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-64-1.png)<!-- -->
-
-``` r
-ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm)) +
-  geom_smooth(method = "lm", se = FALSE)
-```
-
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-65-1.png)<!-- -->
-
-### violin plots
-
-``` r
-ggplot(penguins, aes(x = species, y = flipper_length_mm)) +
-  geom_violin()
-```
-
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-66-1.png)<!-- -->
-
-### boxplots
-
-``` r
-ggplot(penguins, aes(x = species, y = flipper_length_mm)) +
-  geom_boxplot()
-```
-
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-67-1.png)<!-- -->
-
-### bar plots
-
-Bar plots are used to represent the mean (and error), so those must be
-calculated before creating the plot.
-
-``` r
-library(dplyr)
-penguins_flipperlength_summary = 
-  penguins %>% 
-  group_by(species) %>% 
-  dplyr::summarise(mean_flipper_length_mm = mean(flipper_length_mm, na.rm = TRUE),
-                   sd = sd(flipper_length_mm, na.rm = TRUE),
-                   se = sd/sqrt(n()))
-```
-
-``` r
-ggplot(penguins_flipperlength_summary, aes(x = species, y = mean_flipper_length_mm)) +
-  geom_bar(stat = "identity")
-```
-
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-69-1.png)<!-- -->
-
-``` r
-ggplot(penguins_flipperlength_summary, aes(x = species, y = mean_flipper_length_mm)) +
-  geom_bar(stat = "identity")+
-  geom_errorbar(aes(ymin = mean_flipper_length_mm - sd, ymax = mean_flipper_length_mm + sd))
-```
-
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-70-1.png)<!-- -->
-
-### distribution curves
-
-``` r
-ggplot(penguins, aes(x = body_mass_g)) +
-  geom_density()
-```
-
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-71-1.png)<!-- -->
-
-``` r
-ggplot(penguins, aes(x = body_mass_g)) +
-  geom_histogram()
-```
-
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-72-1.png)<!-- -->
-
-``` r
-ggplot(penguins, aes(x = body_mass_g)) +
-  geom_histogram(binwidth = 100)
-```
-
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-73-1.png)<!-- -->
-
-### combining geoms
-
-``` r
-ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm)) +
-  geom_point() + 
-  geom_smooth(method = "lm", se = FALSE)
-```
-
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-74-1.png)<!-- -->
-
-### stacked barplots
-
-``` r
-penguins_count = 
-  penguins %>% 
-  mutate(count = 1)
-```
-
-``` r
-ggplot(penguins_count, aes(x = island, y = count))+
-  geom_bar(stat = "identity", aes(fill = species))
-```
-
-![](3-ggplot_markdown_files/figure-gfm/unnamed-chunk-76-1.png)<!-- -->
